@@ -7,7 +7,7 @@ Before main-mod integration, remove the `functions/placeholder_mapmode` folder, 
 
 ## Register Your Mode
 
-For an extender addon, declare the AU framework's config dependency. This refers to its internal CfgPatches identity and ensures initialization order; it does not require players to install another mod or PBO:
+For an extender addon, declare the AU framework's config dependency. This might become obsolete, depending on the integration status.
 
 ```cpp
 requiredAddons[] = {"A3A_ultimate", "A3A_ultimate_mapmodes_framework"};
@@ -28,15 +28,15 @@ if (!hasInterface) exitWith {};
 ] call A3A_fnc_mapmodesRegister;
 ```
 
-Replace the example ID, localized label, callbacks, and icon with your own values. Use a unique namespaced ID containing an underscore and define the label in your addon's stringtable. The example uses full function names so it does not depend on component macros. If your addon uses AU macros, you can use its `FUNC` and `LSTRING` equivalents instead. Duplicate IDs are rejected.
+Replace the example ID, localized label, callbacks, and icon with your own values. Use a unique namespaced ID containing an underscore and define the label in your addon's stringtable. The example uses full function names so it does not depend on component macros. You can also use `FUNC` and `LSTRING` equivalents instead.
 
-The numeric order is optional (default 100); lower values sort first within the official or extender group, followed by case-insensitive label and ID. An extender cannot move above the official group by using a negative order. Official classification comes from AU configuration, not registration arguments.
+The numeric order is optional (default 100); lower values sort first within the official or extender group, followed by case-insensitive label and ID. Official classification comes from AU configuration, not registration arguments.
 
 The sixth argument is an optional icon texture path, displayed before the mode name. Use an Arma texture or an asset supplied by your addon. Omit it or use `""` for no icon. To specify an icon while keeping the default order, pass `100` as the fifth argument. Existing four- and five-argument registrations continue to work.
 
-`MyAddon_fnc_activateMapmode` and `MyAddon_fnc_deactivateMapmode` are **your functions**, not framework helpers. Activation enables your mode's rendering and interactions. Deactivation must remove its owned handlers and controls and stop its workers. Save handler IDs, clean up only what your mode owns, and keep both callbacks safe to call again. The framework does not implement any rendering or data processing for you.
+`MyAddon_fnc_activateMapmode` and `MyAddon_fnc_deactivateMapmode` are **your functions**, not framework helpers. Activation enables your mode's rendering and interactions. Deactivation must remove its owned handlers and controls and stop its workers. The framework does not implement any rendering or data processing for you.
 
-Both callbacks receive no arguments and run locally, unscheduled. They must return promptly and cannot sleep. The framework never calls them per frame. Selecting a different mode calls the previous provider's disable function before the new provider's enable function. Selecting the current mode is a no-op.
+Both callbacks receive no arguments and run locally, unscheduled. They must return promptly and cannot sleep. The framework never calls them per frame. Selecting a different mode calls the previous provider's disable function before the new provider's enable function. 
 
 The selected mode remains selected while the map is closed. Your provider must handle map openings and recreated displays itself. The framework does not pass a map control or re-run enable merely because the map was reopened. Providers own any ongoing data processing, interaction, or rendering costs.
 
@@ -56,4 +56,4 @@ For example, remove a mode when unloading its feature:
 ["MyAddon_overview"] call A3A_fnc_mapmodesUnregister;
 ```
 
-Calls are local, not broadcast. Dedicated servers and headless clients do not register modes. Malformed input, duplicate IDs, unknown IDs, and nested mutations from a lifecycle callback return false without replacing registry state. Getters return empty values on machines without an interface. The metadata list excludes Default Mapmode, which is an implicit built-in choice. The icon field is appended to metadata; existing ID, label, official, and order positions are unchanged.
+Calls are local, not broadcast. Dedicated servers and headless clients do not register modes.
