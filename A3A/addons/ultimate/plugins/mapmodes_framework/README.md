@@ -1,6 +1,6 @@
 # Mapmodes Framework
 
-The Mapmodes Framework gives Antistasi Ultimate a common way to register and switch between custom map modes. It adds a dropdown beside AU's Location Browser, where built-in features and extender addons can add their own mapmodes. Official modes appear first, with extender modes below a divider, and each player's choice is remembered locally. Creators register through a small client-side API and supply activation and cleanup callbacks. The framework handles registration, ordering, and selection; providers remain responsible for rendering, data processing, and interactions. It does not add a per-frame drawing dispatcher or poll providers for updates.
+The Mapmodes Framework gives Antistasi Ultimate a common way to register and switch between custom map modes. It adds a dropdown beside AU's Location Browser, where built-in features and extender addons can add their own mapmodes. Official modes appear first, with extender modes below a divider, and each player's choice is remembered locally. Creators register through a small client-side API and supply activation and cleanup callbacks. The framework handles registration, ordering, and selection; providers remain responsible for rendering, data processing, and interactions. This should be fairly straight-forward.
 
 **TO BE REMOVED | DEV TEST PROVIDER MAPMODE:** 
 Before main-mod integration, remove the `functions/placeholder_mapmode` folder, its preparation include, and the remaining marked hooks and stringtable key.
